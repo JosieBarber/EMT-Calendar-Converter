@@ -28,7 +28,7 @@ def fetch_html_content(username, password):
     try:
         # Open login page
         driver.get(login_url)
-        time.sleep(0/1)
+        time.sleep(1)
 
         # Enter credentials and submit form
         driver.find_element(By.ID, "sign_in_username").send_keys(username)
@@ -37,11 +37,11 @@ def fetch_html_content(username, password):
 
         # Wait for login to be complete
         driver.switch_to.default_content()
-        time.sleep(0.1)
+        time.sleep(1)
 
         # Open calendar page
         driver.get(calendar_url)
-        time.sleep(0.1)
+        time.sleep(1)
 
         # Get and return html content of the page
         html_content = driver.page_source
