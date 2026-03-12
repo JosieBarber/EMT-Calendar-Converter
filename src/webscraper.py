@@ -19,7 +19,7 @@ def fetch_html_content(username, password):
 
     # Setup Chrome headless (runs in background)
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
 
@@ -28,7 +28,7 @@ def fetch_html_content(username, password):
     try:
         # Open login page
         driver.get(login_url)
-        time.sleep(0/1)
+        time.sleep(1)
 
         # Enter credentials and submit form
         driver.find_element(By.ID, "sign_in_username").send_keys(username)
@@ -37,11 +37,11 @@ def fetch_html_content(username, password):
 
         # Wait for login to be complete
         driver.switch_to.default_content()
-        time.sleep(0.1)
+        time.sleep(1)
 
         # Open calendar page
         driver.get(calendar_url)
-        time.sleep(0.1)
+        time.sleep(1)
 
         # Get and return html content of the page
         html_content = driver.page_source
@@ -109,11 +109,13 @@ def extract_shift_details(shift_element):
         "name": name
     }
 
-def extract_all_shifts(html_page):
+def extract_all_shifts(html_page, name):
     """
     Parse an entire HTML page as a string and extract all shift entries.
 
     @param html_page: HTML content of the schedule page
+    @param name: First name of the user to filter shifts
+
     @return: List of dictionaries containing shift details
     """
 
@@ -127,7 +129,7 @@ def extract_all_shifts(html_page):
         shift_html = str(cell)
         shift_data = extract_shift_details(shift_html)
 
-        if shift_data and all(value != "Unknown" for value in shift_data.values()) and len(shift_data["name"]) >= 2:
+        if shift_data and all(value != "Unknown" for value in shift_data.values()) and len(shift_data["name"]) >= 2 and shift_data["name"] == name:
             shifts.append(shift_data)
 
     return shifts
@@ -142,10 +144,10 @@ def scrape_schedule(username, password, name):
     @param name: First name of the user to filter shifts
     """
     html_page = str(fetch_html_content(username, password))
-    shifts = extract_all_shifts(html_page)
+    shifts = extract_all_shifts(html_page, name)
     print(f"Extracted {len(shifts)} shifts from the schedule.")
-
-    # Filter shifts for the specified name and print them
-    for shift in shifts:
-        if shift["name"] == name:
-            print(shift)
+    return shifts
+    # # Filter shifts for the specified name and print them
+    # for shift in shifts:
+    #     if shift["name"] == name:
+    #         print(shift)
