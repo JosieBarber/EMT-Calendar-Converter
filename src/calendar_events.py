@@ -127,4 +127,4 @@ def main():
     create_event(service, emt_calendar_id, datetime.date(2026, 3, 13), "PM", "Third")
   except HttpError as error:
     print("An error occurred: %s" % error)
-main()s
+# main()
