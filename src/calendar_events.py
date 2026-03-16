@@ -1,6 +1,5 @@
 import datetime
 import os.path
-
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -114,7 +113,7 @@ def verify_calendar_exists(service, calendar_name):
 
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/calendar.app.created", "https://www.googleapis.com/auth/calendar.calendarlist.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/calendar.app.created", "https://www.googleapis.com/auth/calendar.calendarlist.readonly", "https://www.googleapis.com/auth/calendar.events.owned"]
 
 
 def main():
@@ -127,4 +126,3 @@ def main():
     create_event(service, emt_calendar_id, datetime.date(2026, 3, 13), "PM", "Third")
   except HttpError as error:
     print("An error occurred: %s" % error)
-# main()

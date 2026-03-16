@@ -6,16 +6,20 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
 
-def fetch_html_content(username, password):
+def fetch_html_content(username, password, month, year):
     """
     Uses Selenium to log in and fetch the fully rendered HTML of the calendar page.
 
     @param username: Crew Quarters username
     @param password: Crew Quarters password
+    @param month: Month to scrape
+    @param year: Year to scrape
     @return: HTML content of the schedule page as a string
     """
     login_url = "https://stevensems.com/cq/index.php?v=login_form&iframe=true"
-    calendar_url = "https://stevensems.com/cq/index.php?p=calendar"
+    calendar_url = "https://stevensems.com/cq/index.php?p=calendar&cal_month={month}&cal_year={year}".format(month = month, year = year)
+
+    print(calendar_url)
 
     # Setup Chrome headless (runs in background)
     chrome_options = Options()
@@ -51,7 +55,6 @@ def fetch_html_content(username, password):
         # Prevent real crashes if things go sideways
         # Close the browser after fetching the content
         driver.quit()
-
 
 def extract_shift_details(shift_element):
     """
@@ -134,16 +137,17 @@ def extract_all_shifts(html_page, name):
 
     return shifts
 
-# TODO: Main scraping function to orchestrate the entire workflow
-def scrape_schedule(username, password, name):
+def scrape_schedule(username, password, name, month, year):
     """
     Main function to scrape the schedule for a specific user.
 
     @param username: Crew Quarters username
     @param password: Crew Quarters password
     @param name: First name of the user to filter shifts
+    @param month: Month to scrape (default is current month)
+    @param year: Year to scrape (default is current year)
     """
-    html_page = str(fetch_html_content(username, password))
+    html_page = str(fetch_html_content(username, password, month, year))
     shifts = extract_all_shifts(html_page, name)
     print(f"Extracted {len(shifts)} shifts from the schedule.")
     return shifts
