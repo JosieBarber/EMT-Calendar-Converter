@@ -22,7 +22,7 @@ def fetch_html_content(username, password, month, year):
 
     # Setup Chrome headless (runs in background)
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
 
@@ -151,7 +151,3 @@ def scrape_schedule(username, password, name, month, year):
     shifts = extract_all_shifts(html_page, name)
     print(f"Extracted {len(shifts)} shifts from the schedule.")
     return shifts
-    # # Filter shifts for the specified name and print them
-    # for shift in shifts:
-    #     if shift["name"] == name:
-    #         print(shift)
