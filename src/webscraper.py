@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
+from tqdm import tqdm
 
 def fetch_html_content(username, password, month, year):
     """
@@ -19,11 +20,9 @@ def fetch_html_content(username, password, month, year):
     login_url = "https://stevensems.com/cq/index.php?v=login_form&iframe=true"
     calendar_url = "https://stevensems.com/cq/index.php?p=calendar&cal_month={month}&cal_year={year}".format(month = month, year = year)
 
-    print(calendar_url)
-
     # Setup Chrome headless (runs in background)
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
 
@@ -128,7 +127,8 @@ def extract_all_shifts(html_page, name):
     # Find all td elements whose id matches the shift pattern
     shift_cells = soup.find_all("td", id=re.compile(r"^shift_\d+_\d{4}-\d{2}-\d{2}_\d+$"))
 
-    for cell in shift_cells:
+
+    for cell in tqdm(shift_cells):
         shift_html = str(cell)
         shift_data = extract_shift_details(shift_html)
 

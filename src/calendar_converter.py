@@ -3,6 +3,8 @@ from calendar_events import create_event, get_calendar_service, verify_calendar_
 from datetime import datetime
 import getpass
 
+from tqdm import tqdm
+
 name = input("Enter your first name (capitalized first letter): ")
 username = input("Enter your Crew Quarters username: ")
 password = getpass.getpass("Enter your password (input hidden): ")
@@ -20,7 +22,6 @@ if year:
 else:
     year = datetime.now().year
 
-# print("Scraping schedule for {name} for month {month}/{year}".format(name = name, month = month, year = year))
 shifts = scrape_schedule(username, password, name, month, year)
 print("Schedule scraping completed successfully. \n\n")
 
@@ -29,5 +30,5 @@ calendar_name = input("Enter the wanted calendar name: ")
 service = get_calendar_service()
 calendar_id = verify_calendar_exists(service, calendar_name)
 
-for shift in shifts:
+for shift in tqdm(shifts):
     create_event(service, calendar_id, shift["date"], shift["time"], shift["shift"])

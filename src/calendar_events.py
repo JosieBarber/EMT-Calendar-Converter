@@ -54,7 +54,7 @@ def create_event(service, calendar_id, date, time, shift):
 
     event = format_event(date, time, shift)
     created_event = service.events().insert(calendarId=calendar_id, body=event).execute()
-    print('Event created: %s' % (created_event.get('htmlLink')))
+    # print('Event created: %s' % (created_event.get('htmlLink')))
 
 def get_calendar_service():
   """
